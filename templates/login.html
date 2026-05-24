@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block title %}Login - SecureAuth{% endblock %}
+
+{% block content %}
+<div class="auth-card">
+    <div class="card-header">
+        <h1 class="card-title">SecureAuth</h1>
+        <p class="card-subtitle">Enterprise-Grade Authentication</p>
+    </div>
+
+    <form method="POST" id="loginForm">
+        <!-- CSRF Token (Required for security) -->
+        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+
+        <!-- Username Field -->
+        <div class="form-group">
+            <label for="username">Username or Email</label>
+            <input 
+                type="text" 
+                id="username" 
+                name="username" 
+                placeholder="Enter your username or email"
+                required
+                autofocus>
+        </div>
+
+        <!-- Password Field -->
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input 
+                type="password" 
+                id="password" 
+                name="password" 
+                placeholder="Enter your password"
+                required>
+        </div>
+
+        <!-- Login Button -->
+        <button type="submit" class="btn btn-primary">
+            <span>🔓</span>
+            Sign In
+        </button>
+    </form>
+
+    <!-- Footer Links -->
+    <div class="form-footer">
+        <p>
+            <a href="{{ url_for('forgot_password') }}">Forgot your password?</a>
+        </p>
+        <p style="margin-top: 12px;">
+            Don't have an account? 
+            <a href="{{ url_for('register') }}">Create one</a>
+        </p>
+    </div>
+
+    <!-- Security Info -->
+    <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1); font-size: 12px; color: rgba(255,255,255,0.5);">
+        <p style="margin-bottom: 8px;">🔒 Your connection is encrypted with TLS/SSL</p>
+        <p style="margin-bottom: 8px;">🔐 Passwords are hashed with bcrypt + salt + pepper</p>
+        <p>🛡️ Protected against CSRF, XSS, and brute force attacks</p>
+    </div>
+</div>
+{% endblock %}

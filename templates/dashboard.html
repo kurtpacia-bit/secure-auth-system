@@ -1,0 +1,141 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard - SecureAuth{% endblock %}
+
+{% block content %}
+<div style="max-width: 900px; margin: 0 auto;">
+    <!-- Dashboard Header -->
+    <div class="auth-card" style="margin-bottom: 24px;">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div>
+                <h1 class="card-title" style="margin: 0 0 8px 0;">Welcome back, {{ username }}!</h1>
+                <p class="card-subtitle">Your account is secure and protected</p>
+            </div>
+            <a href="{{ url_for('logout') }}" class="btn btn-secondary" style="width: auto; padding: 10px 20px;">
+                🚪 Logout
+            </a>
+        </div>
+    </div>
+
+    <!-- Security Features -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 24px;">
+        <!-- CSRF Protection -->
+        <div class="auth-card">
+            <h3 style="margin-bottom: 12px; color: #667eea;">🛡️ CSRF Protection</h3>
+            <p style="font-size: 13px; color: rgba(255,255,255,0.7); margin-bottom: 12px;">
+                Unique tokens on all forms prevent unauthorized requests from other websites.
+            </p>
+            <div style="padding: 8px 12px; background: rgba(16, 185, 129, 0.1); border-radius: 6px; text-align: center;">
+                <span style="color: #10b981; font-weight: 600;">✓ Active</span>
+            </div>
+        </div>
+
+        <!-- Rate Limiting -->
+        <div class="auth-card">
+            <h3 style="margin-bottom: 12px; color: #667eea;">⏱️ Rate Limiting</h3>
+            <p style="font-size: 13px; color: rgba(255,255,255,0.7); margin-bottom: 12px;">
+                Max 5 login attempts per 15 minutes. Protects against brute force attacks.
+            </p>
+            <div style="padding: 8px 12px; background: rgba(16, 185, 129, 0.1); border-radius: 6px; text-align: center;">
+                <span style="color: #10b981; font-weight: 600;">✓ Active</span>
+            </div>
+        </div>
+
+        <!-- Email Verification -->
+        <div class="auth-card">
+            <h3 style="margin-bottom: 12px; color: #667eea;">📧 Email Verification</h3>
+            <p style="font-size: 13px; color: rgba(255,255,255,0.7); margin-bottom: 12px;">
+                Accounts require email verification before login is allowed.
+            </p>
+            <div style="padding: 8px 12px; background: rgba(16, 185, 129, 0.1); border-radius: 6px; text-align: center;">
+                <span style="color: #10b981; font-weight: 600;">✓ Verified</span>
+            </div>
+        </div>
+
+        <!-- Account Lockout -->
+        <div class="auth-card">
+            <h3 style="margin-bottom: 12px; color: #667eea;">🔒 Account Lockout</h3>
+            <p style="font-size: 13px; color: rgba(255,255,255,0.7); margin-bottom: 12px;">
+                Accounts lock for 30 minutes after 5 failed login attempts.
+            </p>
+            <div style="padding: 8px 12px; background: rgba(16, 185, 129, 0.1); border-radius: 6px; text-align: center;">
+                <span style="color: #10b981; font-weight: 600;">✓ Enabled</span>
+            </div>
+        </div>
+
+        <!-- Password Hashing -->
+        <div class="auth-card">
+            <h3 style="margin-bottom: 12px; color: #667eea;">🔐 Password Hashing</h3>
+            <p style="font-size: 13px; color: rgba(255,255,255,0.7); margin-bottom: 12px;">
+                bcrypt with unique salt and server pepper. Never stored in plain text.
+            </p>
+            <div style="padding: 8px 12px; background: rgba(16, 185, 129, 0.1); border-radius: 6px; text-align: center;">
+                <span style="color: #10b981; font-weight: 600;">✓ Applied</span>
+            </div>
+        </div>
+
+        <!-- Security Headers -->
+        <div class="auth-card">
+            <h3 style="margin-bottom: 12px; color: #667eea;">📋 Security Headers</h3>
+            <p style="font-size: 13px; color: rgba(255,255,255,0.7); margin-bottom: 12px;">
+                CSP, HSTS, X-Frame-Options prevent XSS and clickjacking attacks.
+            </p>
+            <div style="padding: 8px 12px; background: rgba(16, 185, 129, 0.1); border-radius: 6px; text-align: center;">
+                <span style="color: #10b981; font-weight: 600;">✓ Enabled</span>
+            </div>
+        </div>
+
+        <!-- HTTPS Enforcement -->
+        <div class="auth-card">
+            <h3 style="margin-bottom: 12px; color: #667eea;">🔗 HTTPS/SSL</h3>
+            <p style="font-size: 13px; color: rgba(255,255,255,0.7); margin-bottom: 12px;">
+                All connections encrypted with TLS/SSL. HTTP redirects to HTTPS.
+            </p>
+            <div style="padding: 8px 12px; background: rgba(16, 185, 129, 0.1); border-radius: 6px; text-align: center;">
+                <span style="color: #10b981; font-weight: 600;">✓ Enforced</span>
+            </div>
+        </div>
+
+        <!-- Input Sanitization -->
+        <div class="auth-card">
+            <h3 style="margin-bottom: 12px; color: #667eea;">🧹 Input Sanitization</h3>
+            <p style="font-size: 13px; color: rgba(255,255,255,0.7); margin-bottom: 12px;">
+                All inputs validated and sanitized. Prevents SQL injection and XSS.
+            </p>
+            <div style="padding: 8px 12px; background: rgba(16, 185, 129, 0.1); border-radius: 6px; text-align: center;">
+                <span style="color: #10b981; font-weight: 600;">✓ Active</span>
+            </div>
+        </div>
+
+        <!-- Error Logging -->
+        <div class="auth-card">
+            <h3 style="margin-bottom: 12px; color: #667eea;">📊 Error Logging</h3>
+            <p style="font-size: 13px; color: rgba(255,255,255,0.7); margin-bottom: 12px;">
+                All auth events logged with timestamps for security monitoring.
+            </p>
+            <div style="padding: 8px 12px; background: rgba(16, 185, 129, 0.1); border-radius: 6px; text-align: center;">
+                <span style="color: #10b981; font-weight: 600;">✓ Logging</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Account Information -->
+    <div class="auth-card">
+        <h2 style="margin-bottom: 20px; color: #667eea;">Account Information</h2>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
+            <div>
+                <p style="font-size: 12px; color: rgba(255,255,255,0.5); margin-bottom: 4px;">USERNAME</p>
+                <p style="font-size: 16px; font-weight: 600;">{{ username }}</p>
+            </div>
+            <div>
+                <p style="font-size: 12px; color: rgba(255,255,255,0.5); margin-bottom: 4px;">EMAIL</p>
+                <p style="font-size: 16px; font-weight: 600;">{{ email }}</p>
+            </div>
+            <div>
+                <p style="font-size: 12px; color: rgba(255,255,255,0.5); margin-bottom: 4px;">SESSION STATUS</p>
+                <p style="font-size: 16px; font-weight: 600; color: #10b981;">✓ Active</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

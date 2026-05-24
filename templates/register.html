@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+
+{% block title %}Register - SecureAuth{% endblock %}
+
+{% block content %}
+<div class="auth-card">
+    <div class="card-header">
+        <h1 class="card-title">Create Account</h1>
+        <p class="card-subtitle">Secure account registration</p>
+    </div>
+
+    <form method="POST" id="registerForm">
+        <!-- CSRF Token (Required for security) -->
+        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+
+        <!-- Username Field -->
+        <div class="form-group">
+            <label for="username">Username</label>
+            <input 
+                type="text" 
+                id="username" 
+                name="username" 
+                placeholder="Choose a username (3-32 characters)"
+                minlength="3"
+                maxlength="32"
+                pattern="[a-zA-Z0-9_\-]+"
+                required
+                autofocus>
+            <p style="font-size: 11px; color: rgba(255,255,255,0.4); margin-top: 4px;">
+                Letters, numbers, underscores, and dashes only
+            </p>
+        </div>
+
+        <!-- Email Field -->
+        <div class="form-group">
+            <label for="email">Email Address</label>
+            <input 
+                type="email" 
+                id="email" 
+                name="email" 
+                placeholder="Enter your email address"
+                required>
+            <p style="font-size: 11px; color: rgba(255,255,255,0.4); margin-top: 4px;">
+                We'll send a verification link to this address
+            </p>
+        </div>
+
+        <!-- Password Field -->
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input 
+                type="password" 
+                id="password" 
+                name="password" 
+                placeholder="Create a strong password"
+                required>
+            
+            <!-- Password Strength Meter -->
+            <div class="password-strength" style="margin-top: 12px;">
+                <div class="strength-bar">
+                    <div class="strength-fill strength-0"></div>
+                </div>
+                <p class="strength-text">Password Requirements:</p>
+                <ul style="margin-left: 16px; margin-top: 8px; font-size: 12px; color: rgba(255,255,255,0.5);">
+                    <li data-requirement="minLength">✓ Minimum 12 characters</li>
+                    <li data-requirement="uppercase">✓ At least one uppercase letter</li>
+                    <li data-requirement="lowercase">✓ At least one lowercase letter</li>
+                    <li data-requirement="digit">✓ At least one digit (0-9)</li>
+                    <li data-requirement="special">✓ At least one special character (@$!%*?&)</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Register Button -->
+        <button type="submit" class="btn btn-primary" style="margin-top: 20px;">
+            <span>✨</span>
+            Create Account
+        </button>
+    </form>
+
+    <!-- Footer Links -->
+    <div class="form-footer">
+        <p>
+            Already have an account? 
+            <a href="{{ url_for('login') }}">Sign in</a>
+        </p>
+    </div>
+
+    <!-- Security Info -->
+    <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1); font-size: 12px; color: rgba(255,255,255,0.5);">
+        <p style="margin-bottom: 8px;">📧 Email verification required</p>
+        <p style="margin-bottom: 8px;">🔐 Passwords hashed with bcrypt</p>
+        <p>🛡️ Your data is encrypted end-to-end</p>
+    </div>
+</div>
+{% endblock %}

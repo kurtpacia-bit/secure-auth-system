@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %}Verify Email - SecureAuth{% endblock %}
+
+{% block content %}
+<div class="auth-card">
+    <div class="card-header">
+        <h1 class="card-title">Email Verification</h1>
+        <p class="card-subtitle">Confirm your email address</p>
+    </div>
+
+    <div style="text-align: center; padding: 20px 0;">
+        <p style="font-size: 14px; color: rgba(255,255,255,0.7); margin-bottom: 20px;">
+            Your email is being verified...
+        </p>
+        
+        <div style="animation: pulse 1.5s infinite;">
+            <p style="font-size: 48px;">✉️</p>
+        </div>
+
+        <p style="font-size: 13px; color: rgba(255,255,255,0.5); margin-top: 20px;">
+            If you weren't redirected, <a href="{{ url_for('login') }}">click here to login</a>
+        </p>
+    </div>
+
+    <style>
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+    </style>
+</div>
+{% endblock %}
