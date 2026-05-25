@@ -416,14 +416,22 @@ def login():
         return redirect(url_for('login'))
 
     # ========== FETCH USER FROM DATABASE ==========
+    # Support both username and email login
     try:
+        # First try to find user by username
         response = supabase.table('users').select('*').eq(
             'username', username
         ).execute()
 
+        # If not found by username, try by email
+        if not response.data:
+            response = supabase.table('users').select('*').eq(
+                'email', username
+            ).execute()
+
         if not response.data:
             RateLimitTracker.record_attempt(f"login_{client_ip}")
-            log_failed_login(username, client_ip, "Username not found")
+            log_failed_login(username, client_ip, "Username/Email not found")
             flash('Invalid username or password', 'error')
             return redirect(url_for('login'))
 
