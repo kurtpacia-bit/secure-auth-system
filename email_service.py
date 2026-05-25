@@ -250,8 +250,8 @@ Questions? Contact security@secureauth.com
             msg.attach(MIMEText(text_body, 'plain'))
             msg.attach(MIMEText(html_body, 'html'))
 
-            # Connect to SMTP server with TLS
-            with smtplib.SMTP(config.SMTP_SERVER, config.SMTP_PORT) as server:
+            # Connect to SMTP server with TLS and timeout
+            with smtplib.SMTP(config.SMTP_SERVER, config.SMTP_PORT, timeout=10) as server:
                 server.starttls()  # Encrypt connection
                 server.login(config.SMTP_USERNAME, config.SMTP_PASSWORD)
                 server.sendmail(config.EMAIL_FROM, recipient, msg.as_string())
