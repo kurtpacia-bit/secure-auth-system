@@ -183,7 +183,7 @@ def index():
 @log_request
 def register():
     """
-    User registration with email verification.
+    User registration with instant login capability.
 
     Security features:
     - Rate limiting: max 3 registrations per hour per IP
@@ -191,7 +191,7 @@ def register():
     - Email validation
     - CSRF protection
     - Input sanitization
-    - Account verified via email before login allowed
+    - Instant account creation (no email verification required)
     """
 
     if request.method == 'GET':
@@ -272,60 +272,34 @@ def register():
         flash('Registration failed. Please try again later.', 'error')
         return redirect(url_for('register'))
 
-    # ========== GENERATE VERIFICATION TOKEN ==========
-    verification_token = TokenGenerator.generate_token()
-    verification_token_hash = TokenGenerator.generate_token_hash(
-        verification_token
-    )
-    verification_expires = datetime.utcnow() + timedelta(
-        hours=config.VERIFICATION_TOKEN_EXPIRY
-    )
-
     # ========== CREATE USER IN DATABASE ==========
+    # Note: Email verification is skipped for instant registration
     try:
         response = supabase.table('users').insert({
             'username': username,
             'email': email,
             'password_hash': hashed_password,
             'salt': salt,
-            'email_verified': False,
-            'verification_token_hash': verification_token_hash,
-            'verification_token_expires': verification_expires.isoformat(),
+            'email_verified': True,  # Auto-verified for instant login
+            'verification_token_hash': None,
+            'verification_token_expires': None,
             'failed_login_attempts': 0,
             'account_locked_until': None,
             'created_at': datetime.utcnow().isoformat()
         }).execute()
 
         logger.info(f"New user registered: {username}, Email: {email}")
+        RateLimitTracker.record_attempt(f"register_{client_ip}")
+        
+        flash(
+            'Registration successful! You can now login.',
+            'success'
+        )
+        return redirect(url_for('login'))
 
     except Exception as e:
         logger.error(f"Failed to create user: {str(e)}")
         flash('Registration failed. Please try again later.', 'error')
-        return redirect(url_for('register'))
-
-    # ========== SEND VERIFICATION EMAIL ==========
-    verification_link = url_for(
-        'verify_email',
-        token=verification_token,
-        _external=True
-    )
-
-    success, msg = EmailService.send_verification_email(
-        email, username, verification_link
-    )
-
-    if success:
-        log_email_verification(username, email, False)
-        RateLimitTracker.record_attempt(f"register_{client_ip}")
-        flash(
-            'Registration successful! Please check your email to verify your account.',
-            'success'
-        )
-        return redirect(url_for('login'))
-    else:
-        # Email sending failed - delete the user
-        supabase.table('users').delete().eq('username', username).execute()
-        flash('Failed to send verification email. Please try again.', 'error')
         return redirect(url_for('register'))
 
 
